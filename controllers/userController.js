@@ -1,9 +1,11 @@
-const {User, Thought} = require("../models");
+const { User, Thought } = require("../models");
 const { getThoughts } = require("./thoughtController");
 
 module.exports = {
   getUsers(req, res) {
     User.find()
+      .populate("thoughts")
+      .populate("friends")
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
@@ -36,8 +38,9 @@ module.exports = {
         res.json({ message: "user deleted" });
       })
       .catch((err) => {
-        console.log(err)
-        res.status(500).json(err)});
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
 
   addFriend(req, res) {
